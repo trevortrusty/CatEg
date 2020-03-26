@@ -1,14 +1,18 @@
 import os
 import sys
-
+from pyfiglet import Figlet
 path = sys.argv[1].strip()
 os.chdir(path)
+
+categ_names = ['Binaries', 'Archives', 'Documents', 'Images', 'Videos', 'Code']
 
 def move(source, dir):
     os.system(f'move "{source}" "{dir}/{source}"')
 
-# stream = os.popen('cd')
-# print(stream.read())
+
+f = Figlet(font='slant')
+print(f.renderText('CatEg'))
+
 for file in os.listdir():
     if file.endswith('.exe') or file.endswith('.jar'):
         # Put in Binaries folder
@@ -41,10 +45,12 @@ for file in os.listdir():
             os.system('mkdir Code')
         move(file, 'Code')
     elif os.path.isdir(file):
-        pass
+        if not file in categ_names:
+            move(file, 'Misc')
     else:
         # Put in misc folder.
         if not os.path.exists('Misc'):
             os.system('mkdir Misc')
         move(file, 'Misc')
-    
+
+print(f.renderText('Completed'))
